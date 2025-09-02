@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}{{ company.company_name }} - Company Details{% endblock %}
+
+{% block content %}
+<div class="company-detail-header">
+    <div class="breadcrumb">
+        <a href="{{ url_for('index') }}">Home</a> > 
+        <a href="{{ url_for('search') }}">Search</a> > 
+        <span>{{ company.company_name }}</span>
+    </div>
+    
+    <div class="company-title">
+        <h1>{{ company.company_name }}</h1>
+        <span class="company-number">Company Number: {{ company.company_number }}</span>
+    </div>
+</div>
+
+<div class="company-detail-content">
+    <div class="detail-sections">
+        <div class="detail-section">
+            <h2>Company Information</h2>
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <span class="label">Company Name:</span>
+                    <span class="value">{{ company.company_name }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Company Number:</span>
+                    <span class="value">{{ company.company_number }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Status:</span>
+                    <span class="value status-{{ company.status.lower() }}">{{ company.status }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Incorporation Date:</span>
+                    <span class="value">{{ company.incorporation_date }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Company Type:</span>
+                    <span class="value">{{ company.company_type }}</span>
+                </div>
+                {% if company.business_activity %}
+                <div class="detail-item">
+                    <span class="label">Business Activity:</span>
+                    <span class="value">{{ company.business_activity }}</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="detail-section">
+            <h2>Registered Address</h2>
+            <div class="address-block">
+                <p>{{ company.registered_address }}</p>
+            </div>
+        </div>
+        
+        {% if company.directors %}
+        <div class="detail-section">
+            <h2>Directors</h2>
+            <div class="directors-list">
+                {% for director in company.directors %}
+                <div class="director-card">
+                    <h4>{{ director.name }}</h4>
+                    <p class="director-role">{{ director.role }}</p>
+                    {% if director.appointment_date %}
+                    <p class="director-date">Appointed: {{ director.appointment_date }}</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if company.financial_info %}
+        <div class="detail-section">
+            <h2>Financial Information</h2>
+            <div class="financial-grid">
+                {% if company.financial_info.turnover %}
+                <div class="financial-item">
+                    <span class="label">Turnover:</span>
+                    <span class="value">£{{ "{:,}".format(company.financial_info.turnover) }}</span>
+                </div>
+                {% endif %}
+                {% if company.financial_info.profit %}
+                <div class="financial-item">
+                    <span class="label">Profit:</span>
+                    <span class="value">£{{ "{:,}".format(company.financial_info.profit) }}</span>
+                </div>
+                {% endif %}
+                {% if company.financial_info.employees %}
+                <div class="financial-item">
+                    <span class="label">Employees:</span>
+                    <span class="value">{{ company.financial_info.employees }}</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="back-to-search">
+    <a href="{{ url_for('search') }}" class="btn-secondary">Back to Search</a>
+</div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Error - Companies House Search{% endblock %}
+
+{% block content %}
+<div class="error-container">
+    <div class="error-content">
+        <h1>Oops! Something went wrong</h1>
+        <p class="error-message">{{ message }}</p>
+        <div class="error-actions">
+            <a href="{{ url_for('index') }}" class="btn-primary">Go Home</a>
+            <a href="{{ url_for('search') }}" class="btn-secondary">Try Search Again</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

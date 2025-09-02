@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Search Results - Companies House Search{% endblock %}
+
+{% block content %}
+<div class="search-header">
+    <div class="search-form-container">
+        <form class="search-form" method="POST" action="{{ url_for('search') }}">
+            <div class="search-input-group">
+                <input type="text" 
+                       name="query" 
+                       class="search-input" 
+                       value="{{ query }}"
+                       placeholder="Enter company name, number, or address..."
+                       required>
+                <button type="submit" class="search-button">
+                    <span>Search</span>
+                </button>
+            </div>
+        </form>
+    </div>
+    
+    {% if query %}
+    <div class="search-info">
+        <h2>Search Results for "{{ query }}"</h2>
+        <p class="results-count">{{ total_results }} companies found</p>
+    </div>
+    {% endif %}
+</div>
+
+{% if companies %}
+<div class="results-container">
+    <div class="companies-list">
+        {% for company in companies %}
+        <div class="company-card">
+            <div class="company-header">
+                <h3 class="company-name">
+                    <a href="{{ url_for('company_detail', company_id=company._id) }}">
+                        {{ company.company_name }}
+                    </a>
+                </h3>
+                <span class="company-number">{{ company.company_number }}</span>
+            </div>
+            
+            <div class="company-details">
+                <div class="detail-row">
+                    <span class="label">Status:</span>
+                    <span class="value status-{{ company.status.lower() }}">{{ company.status }}</span>
+                </div>
+                
+                <div class="detail-row">
+                    <span class="label">Incorporated:</span>
+                    <span class="value">{{ company.incorporation_date }}</span>
+                </div>
+                
+                <div class="detail-row">
+                    <span class="label">Address:</span>
+                    <span class="value">{{ company.registered_address }}</span>
+                </div>
+                
+                {% if company.business_activity %}
+                <div class="detail-row">
+                    <span class="label">Business Activity:</span>
+                    <span class="value">{{ company.business_activity }}</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Pagination -->
+    {% if total_pages > 1 %}
+    <div class="pagination">
+        {% if current_page > 1 %}
+        <form method="POST" action="{{ url_for('search') }}" style="display: inline;">
+            <input type="hidden" name="query" value="{{ query }}">
+            <input type="hidden" name="page" value="{{ current_page - 1 }}">
+            <button type="submit" class="pagination-btn">Previous</button>
+        </form>
+        {% endif %}
+        
+        <div class="pagination-info">
+            Page {{ current_page }} of {{ total_pages }}
+        </div>
+        
+        {% if current_page < total_pages %}
+        <form method="POST" action="{{ url_for('search') }}" style="display: inline;">
+            <input type="hidden" name="query" value="{{ query }}">
+            <input type="hidden" name="page" value="{{ current_page + 1 }}">
+            <button type="submit" class="pagination-btn">Next</button>
+        </form>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+
+{% else %}
+<div class="no-results">
+    <div class="no-results-content">
+        <h3>No companies found</h3>
+        <p>Try adjusting your search terms or browse our database</p>
+        <a href="{{ url_for('index') }}" class="btn-primary">Back to Search</a>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

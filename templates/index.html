@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Companies House Search{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <div class="hero-content">
+        <h1 class="hero-title">Find Company Information</h1>
+        <p class="hero-subtitle">Search for companies by name, number, address, or business activity</p>
+        
+        <form class="search-form" method="POST" action="{{ url_for('search') }}">
+            <div class="search-input-group">
+                <input type="text" 
+                       name="query" 
+                       class="search-input" 
+                       placeholder="Enter company name, number, or address..."
+                       required>
+                <button type="submit" class="search-button">
+                    <span>Search</span>
+                </button>
+            </div>
+        </form>
+        
+        <div class="search-tips">
+            <h3>Search Tips:</h3>
+            <ul>
+                <li>Search by company name (e.g., "Apple Inc")</li>
+                <li>Search by company number (e.g., "12345678")</li>
+                <li>Search by address (e.g., "London")</li>
+                <li>Search by business activity (e.g., "Technology")</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="features">
+    <div class="feature-grid">
+        <div class="feature-card">
+            <div class="feature-icon">🔍</div>
+            <h3>Comprehensive Search</h3>
+            <p>Search across company names, numbers, addresses, and business activities</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3>Detailed Information</h3>
+            <p>View comprehensive company details including directors and financial information</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>Fast Results</h3>
+            <p>Get instant search results with pagination support up to 5 pages</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
